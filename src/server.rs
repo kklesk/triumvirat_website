@@ -2,7 +2,6 @@ use std::{fmt, io};
 use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream};
 
-
 struct Clients{
     client_socket: TcpStream,
 }
@@ -34,19 +33,10 @@ pub fn run(&mut self) {
                 match connection.accept(){
                     Ok((mut stream,addr)) => {
                         let mut buffer = [0;1024];
-                        match stream.read(&mut buffer){
-                            Ok(stream_read) => {
-                                println!("stream_write: {:?}",stream_read);
-
-                                // stream_read
-                            }
-                            Err(err) => {
-                                eprintln!("Could not write data to stream {}",err);
-                                continue;
-                            }
-                        }
-                        //debug print
+                        stream.read(&mut buffer).expect("Could not read buffer");
+                        println!("{}",String::from_utf8_lossy(&buffer));
                         // println!("{:?}{}",stream,addr);
+                        //debug print
                     }
                     Err(err) => {
                         continue;
